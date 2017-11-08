@@ -9,8 +9,8 @@ module.exports = function(Usuario) {
     var options = {
       type: 'email',
       to: usuario.email,
-      from: 'noreply@loopback.com',
-      subject: 'Thanks for registering.',
+      from: process.env.EMAIL_USER,
+      subject: 'Gracias por registrarte.Te enviaremos un correo a tu cuenta',
       template: path.resolve(__dirname, '../../server/views/verify.ejs'),
       redirect: '/verified',
       usuario: usuario
@@ -28,6 +28,24 @@ module.exports = function(Usuario) {
         redirectTo: '/',
         redirectToLinkText: 'Log in'
       });
+    });
+});    
+      //send password reset link when requested
+
+  Usuario.on('resetPasswordRequest', function(info) {
+    var url = 'http://' + config.host + ':' + config.port + '/reset-password';
+    var html = 'Click <a href="' + url + '?access_token=' +
+        info.accessToken.id + '">here</a> to reset your password';
+
+   
+    Usuario.app.models.Email.send({
+      to: info.email,
+      from: process.env.EMAIL_USER,
+      subject: 'Password reset',
+      html: html
+    }, function(err) {
+      if (err) return console.log('> error sending password reset email');
+      console.log('> sending password reset email to:', info.email);
     });
 });
 
