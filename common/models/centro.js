@@ -26,6 +26,12 @@ module.exports = function (Centro) {
         });
         next();
     });
+    
+        Centro.beforeRemote('find', function (context, centro, next) {
+        context.args.filter={where:{verificado:true}};
+        next();
+    });
+
 
     /**
      * Va a cambiar el estado de verificado de un centro solo lo podra usar el admin
@@ -38,6 +44,8 @@ module.exports = function (Centro) {
         this.save();      
         callback(null, this);
     };
+    
+
 
 
 };
