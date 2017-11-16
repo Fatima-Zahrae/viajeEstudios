@@ -33,6 +33,9 @@
   "session": {},
   "auth": {},
   "parse": {},
+   "initial:before": {
+    "/home/alumno/Documentos/viajeEstudios/server/middelware/myMidddleware.js":{}
+  },
   "routes": {
     "loopback#rest": {
       "paths": [
